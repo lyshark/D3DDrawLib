@@ -64,6 +64,12 @@ int main(int argc, char *argv[])
 }
 ```
 
+In the following case demonstration, only the drawing code inside the Draw function needs to be changed, and other code remains unchanged. Next, we will demonstrate drawing various graphic elements such as lines, boxes, text, center of gravity, progress bars, circles, etc. one by one.
+
+
+
+
+
 
 
 
