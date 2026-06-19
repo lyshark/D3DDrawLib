@@ -10,7 +10,7 @@ This Windows platform dynamic drawing library, developed based on C/C++language,
 
 First, install the Microsoft DirectX SDK (June 2010) and place the 'D3DDrawLib' header and library files into the 'Release' folder. Right click on the project to open its properties and switch to the 'Release+Win32' configuration. In the 'VC++' directory, add the 'Include' path and 'Release' folder path of the 'DXSDK' to the containing directory, and add the 'DXSDK Lib \ x86' path and 'Release' folder path to the library directory. Then, enter the linker input bar to add dependencies and fill in the 'D3DDrawLib. lib' field. Finally, write '# include<D3DDrawLib. h>' in the code header to use the drawing library.
 
-![alt text](image.png)
+<img width="944" height="376" alt="image" src="https://github.com/user-attachments/assets/fa231f36-7c15-4004-b076-3cdb36e4a778" />
 
 The following example is developed based on the D3DDrawLib drawing library, with two major business interfaces reserved for the program body
 
