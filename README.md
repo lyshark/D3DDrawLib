@@ -250,6 +250,424 @@ void Draw()
 }
 ```
 
+### Draw a box
+
+There are various types of box drawing, such as calling DrawFilledRectangle to draw solid boxes, calling DrawBorderRectangle to draw hollow boxes, calling DrawFourkCornersBox to draw square hollow boxes, and the DrawPerspectiveRect series is used to draw complex box structures with progress bars, which can be displayed in four positions: top, bottom, left, and right.
+
+**DrawFilledRectangle**
+
+This function is used to draw a filled solid rectangle, where the first and second parameters specify the coordinates of the top left corner of the rectangle, the third and fourth parameters specify the width and height of the rectangle, and the fifth parameter specifies the fill color of the rectangle.
+```c
+int RectWidth = 90;     // rectangle width
+int RectHeight = 150;   // Rectangular height
+int X = 100;            // X
+int Y = 200;            // Y
+ 
+D3DDrawLib::Start()->DrawFilledRectangle(
+    X,
+    Y,
+    RectWidth,
+    RectHeight,
+    D3DCOLOR_RGBA(254, 0, 0, 184)
+);
+```
+
+**DrawBorderRectangle**
+
+This function is used to draw a hollow rectangle with borders. The first and second parameters are used to specify the X and Y coordinates of the top left corner of the rectangle, the third and fourth parameters are used to specify the width and height of the rectangle, the fifth parameter is used to specify the line width of the rectangle, and the sixth parameter is used to specify the fill color of the rectangle.
+
+```c
+int RectWidth = 90;     // rectangle width
+int RectHeight = 150;   // Rectangular height
+int X = 100;            // X
+int Y = 200;            // Y
+ 
+D3DDrawLib::Start()->DrawBorderRectangle(
+    X,
+    Y,
+    RectWidth,
+    RectHeight,
+    2,
+    D3DCOLOR_RGBA(254, 0, 0, 184)
+);
+```
+
+**DrawFourCornersBox**
+
+This function is used to draw a hollow rectangle with four corner borders. In addition, the DrawCornerFrame function can also achieve the drawing effect. The first and second parameters are used to specify the X and Y coordinates of the upper left corner of the rectangle, the third and fourth parameters are used to specify the width and height of the rectangle, the fifth parameter is used to specify the line width of the rectangle, and the sixth parameter is used to specify the filling color of the rectangle.
+
+```c
+int RectWidth = 90;     // rectangle width
+int RectHeight = 150;   // Rectangular height
+int X = 100;            // X
+int Y = 200;            // Y
+ 
+D3DDrawLib::Start()->DrawFourCornersBox(
+    X,
+    Y,
+    RectWidth,
+    RectHeight,
+    2,
+    D3DCOLOR_RGBA(254, 0, 0, 184)
+);
+ 
+D3DDrawLib::Start()->DrawCornerFrame(
+    X,
+    Y,
+    RectWidth,
+    RectHeight,
+    2,
+    D3DCOLOR_RGBA(254, 0, 0, 184)
+);
+```
+
+**DrawPerspectiveRect**
+
+This function series is used to draw a composite hollow rectangle with a progress bar. Its main direction range includes left, right, top, bottom, and other directions. The first parameter is used to specify the progress percentage to be displayed, the second and third parameters are used to specify the X and Y coordinates of the upper left corner of the rectangle, and the fourth and fifth parameters are used to specify the width and height of the rectangle. The four different rectangles are called as follows.
+
+```c
+// Left progress bar rectangular
+D3DDrawLib::Start()->DrawPerspectiveRectLeft(
+    93,
+    160,
+    200,
+    90,
+    160
+);
+ 
+// Right progress bar rectangular
+D3DDrawLib::Start()->DrawPerspectiveRectRight(
+    65,
+    300,
+    200,
+    60,
+    120
+);
+ 
+// Top progress bar rectangular
+D3DDrawLib::Start()->DrawPerspectiveRectTop(
+    10,
+    450,
+    200,
+    90,
+    160
+);
+ 
+// Bottom progress bar rectangular
+D3DDrawLib::Start()->DrawPerspectiveRectBottom(
+    10,
+    450,
+    200,
+    90,
+    160
+);
+```
+
+Draw three different box shapes using DrawFilledAngular, DrawBorderRectangle, and DrawFourCornersBox, and arrange them horizontally in sequence for display. The code is shown below;
+```c
+void Draw()
+{
+    int ScreenWidth = 1024; // screen width
+    int RectWidth = 90;     // rectangle width
+    int RectHeight = 150;   // Rectangular height
+    int Padding = 20;       // The spacing between rectangles
+ 
+    // Calculate the starting position of the first solid rectangle
+    int x1 = (ScreenWidth - RectWidth * 3 - Padding * 2) / 2;
+    int y1 = 20;
+    D3DDrawLib::Start()->DrawFilledRectangle(
+        x1,
+        y1,
+        RectWidth,
+        RectHeight,
+        D3DCOLOR_RGBA(254, 0, 0, 184)
+    );
+ 
+    // Calculate the starting position of the second hollow rectangle
+    int x2 = x1 + RectWidth + Padding;
+    int y2 = 20;
+    D3DDrawLib::Start()->DrawBorderRectangle(
+        x2,
+        y2,
+        RectWidth,
+        RectHeight,
+        2,
+        D3DCOLOR_RGBA(15, 44, 0, 25)
+    );
+ 
+    // Calculate the starting position of the third corner box
+    int x3 = x2 + RectWidth + Padding;
+    int y3 = 20;
+    D3DDrawLib::Start()->DrawFourCornersBox(
+        x3,
+        y3,
+        RectWidth,
+        RectHeight,
+        2,
+        D3DCOLOR_RGBA(254, 0, 0, 25)
+    );
+}
+```
+continue to use DrawPerspectiveRectLeft、DrawPerspectiveRectRight、DrawPerspectiveRectTop、DrawPerspectiveRectBottom To draw a composite box with a progress bar display, dynamic drawing can be achieved by calling these functions and passing in the corresponding position and size. The code is shown below;
+```c
+void Draw()
+{
+    // Draw the left progress bar
+    D3DDrawLib::Start()->DrawPerspectiveRectLeft(
+        93,
+        160,
+        200,
+        90,
+        160
+    );
+    
+    // Draw the top progress bar
+    D3DDrawLib::Start()->DrawPerspectiveRectTop(
+        65,
+        300,
+        200,
+        60,
+        120
+    );
+ 
+    // Draw the progress bar on the right side
+    D3DDrawLib::Start()->DrawPerspectiveRectRight(
+        10,
+        450,
+        200,
+        90,
+        160
+    );
+ 
+    // Draw the bottom progress bar
+    D3DDrawLib::Start()->DrawPerspectiveRectBottom(
+        45,
+        650,
+        200,
+        90,
+        160
+    );
+}
+```
+
+### Draw progress bar
+
+There are also multiple categories to choose from when drawing progress bars. To draw a hollow progress bar, you can call the DrawBloodFrame function. To draw a horizontal progress bar, you can call the DrawBlood-Horizontal function. To draw a vertical progress bar, you can call the DrawBlood_VerticalNew function. To draw a complete vertical progress bar, you can call the DrawBlood-HorizontalNew function. To draw a simple horizontal progress bar, you can call the DrawBlood_Transverse function. The corresponding vertical progress bar is implemented by calling the DrawLeft_Vertical function.
+
+**DrawBloodFrame**
+
+This function is used to implement the drawing of hollow progress boxes, which is actually a compressed version of the box. The first and second parameters are used to specify the X and Y coordinates of the upper left corner of the drawn rectangle, the third and fourth parameters are used to specify the width and height of the rectangle, the fifth parameter is used to specify the line width of the rectangle, and the sixth parameter is used to specify the filling color of the rectangle.
+
+This function can not only be used to draw horizontal progress, but also to draw vertical progress bars by changing the height to width ratio of the progress bar. The vertical display effect can be achieved by swapping the frameHeight and frameWidth parameters as follows.
+
+```c
+// Screen width and height
+int ScreenWidth = 1024;
+int ScreenHeight = 768;
+ 
+// parameter
+float frameLeft = (ScreenWidth - 3 * 150) / 2;
+float frameTop = 50;
+float frameHeight = 20;
+float frameWidth = 150;
+int lineWidth = 2;
+ 
+// Draw horizontal progress
+D3DDrawLib::Start()->DrawBloodFrame(
+    frameLeft,
+    frameTop,
+    frameHeight,
+    frameWidth,
+    lineWidth,
+    D3DCOLOR_RGBA(255, 0, 0, 255)
+);
+ 
+// Draw vertical progress
+D3DDrawLib::Start()->DrawBloodFrame(
+    frameLeft,
+    frameTop,
+    frameWidth,
+    frameHeight,
+    lineWidth,
+    D3DCOLOR_RGBA(255, 0, 0, 255)
+);
+```
+
+**DrawBlood**
+
+This series of functions is used to draw horizontal and vertical progress bars. The horizontal progress bar can be drawn using the DrawBlood-Horizontal function, while the vertical progress bar can be drawn using the DrawBlood_Vertical function. The parameter passing of both functions is consistent. The first parameter is used to specify the percentage of the progress bar, the second and third parameters are used to specify the X and Y coordinates of the upper left corner of the drawn rectangle, the fourth and fifth parameters are used to specify the width and height of the rectangle, and the sixth parameter is used to specify the color of the progress bar.
+
+Firstly, taking the horizontal progress bar as an example, calling DrawBlood-Horizontal and passing in the corresponding parameters can achieve drawing. To change the progress bar to vertical, simply invert the width and height parameters and call the DrawBlood_Vertical function to achieve drawing;
+
+```c
+// Screen width and height
+int ScreenWidth = 1024;
+int ScreenHeight = 768;
+ 
+// Parameters of horizontal progress bar
+float x = (ScreenWidth - 3 * 150) / 2;
+float y = 250;
+ 
+float hp = 75.0f;
+int width = 150;
+int height = 20;
+ 
+// Draw a horizontal progress bar
+D3DDrawLib::Start()->DrawBlood_Horizontal(
+    hp,
+    x,
+    y,
+    width,
+    height,
+    D3DCOLOR_RGBA(255, 0, 0, 255)
+);
+ 
+// Draw a vertical progress bar
+D3DDrawLib::Start()->DrawBlood_Vertical(
+    hp,
+    x,
+    y,
+    height,
+    height,
+    D3DCOLOR_RGBA(255, 0, 0, 255)
+);
+```
+
+**DrawBloodNew**
+
+This series of functions is also used to implement the drawing of horizontal and vertical progress bars. The difference is that this progress bar supports the increase or decrease of progress from top to bottom BLOOD-UPTODOWN or from bottom to top BLOOD_SOWNTOOP. To draw a vertical progress bar, the DrawBlood_VerticalNew function can be used, while the horizontal one can use the DrawBlood-HorizontalNew function, which has the same parameters as the DrawBlood function. The only difference is that a type parameter can be passed at the end.
+
+```c
+#define BLOOD_UPTODOWN 1
+#define BLOOD_DOWNTOUP 2
+ 
+// Screen width and height
+int ScreenWidth = 1024;
+int ScreenHeight = 768;
+ 
+// Parameters of horizontal progress bar
+float x = (ScreenWidth - 3 * 150) / 2;
+float y = 250;
+int width = 150;
+int height = 20;
+ 
+// Draw a horizontal progress bar
+D3DDrawLib::Start()->DrawBlood_HorizontalNew(
+    50.0f,
+    x,
+    y,
+    width,
+    height,
+    D3DCOLOR_RGBA(255, 0, 0, 255),
+    BLOOD_UPTODOWN
+);
+```
+
+**DrawTraverse**
+
+This series of functions is used to draw line based progress bars. To draw a horizontal progress bar, the DrawBlood_Transverse function can be called. To draw a vertical progress bar, the DrawLeft_Vertical function can be called. The two parameters are passed in the same way, with the first parameter specifying the percentage, the second and third parameters specifying the X and Y coordinate positions where the progress bar appears, the fourth and fifth parameters specifying the height and width of the drawing, the sixth parameter specifying the outer border color, and the seventh parameter specifying the internal progress bar color.
+
+```c
+// Progress bar parameters
+float x = 100.0f;
+float y = 100.0f;
+float width = 200.0f;
+float height = 20.0f;
+ 
+D3DCOLOR colorA1 = D3DCOLOR_RGBA(255, 0, 0, 255);  // red
+D3DCOLOR colorB1 = D3DCOLOR_RGBA(0, 255, 0, 255);  // green
+ 
+// Start drawing horizontally
+D3DDrawLib::Start()->DrawBlood_Transverse(
+    75.0f,
+    x,
+    y,
+    width,
+    height,
+    colorA1,
+    colorB1
+);
+ 
+// Start drawing vertically
+D3DDrawLib::Start()->DrawLeft_Vertical(
+    50.0f,
+    x,
+    y,
+    height,
+    width,
+    colorA1,
+    colorB1
+);
+```
+
+**DrawCenterBlood**
+
+This series of functions is used to draw beautiful center progress bars. To draw a horizontal progress bar, the DrawHorizontalCenterBlood function can be called. To draw a vertical progress bar, the DrawVerticalCenterBlood function can be called. The parameter passing of the two is consistent. The first and second parameters are used to specify the X and Y coordinate positions where the progress bar appears, the third and fourth parameters are used to specify the height and width of the progress bar, the fifth parameter is used to specify the percentage of the progress bar, and the sixth parameter specifies whether it is empty. The default value is 0.
+
+```c
+// parameter
+int x = 100;
+int y = 90;
+int height = 100;
+int width = 10;
+int hp = 100;
+int is_bool = 0;
+ 
+// Horizontal progress bar
+D3DDrawLib::Start()->DrawHorizontalCenterBlood(
+    x,
+    y,
+    height,
+    width,
+    hp,
+    is_bool
+);
+ 
+// Vertical progress bar
+D3DDrawLib::Start()->DrawVerticalCenterBlood(
+    x,
+    y,
+    height,
+    width,
+    hp,
+    is_bool
+);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
