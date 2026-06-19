@@ -634,113 +634,291 @@ D3DDrawLib::Start()->DrawVerticalCenterBlood(
 );
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**DrawBloodFrame**
+
+First, we use DrawBloodFrame to draw horizontal hollow frames. As shown in the code below, we first define the drawing position and set three different colors, implementing the drawing by calling DrawBloodFrame three times.
+```c
+void Draw()
+{
+    // Screen width and height
+    int ScreenWidth = 1024;
+    int ScreenHeight = 768;
+
+    // Hollow frame parameters
+    float frameLeft = (ScreenWidth - 3 * 150) / 2;
+    float frameTop = 50;
+    float frameHeight = 20;
+    float frameWidth = 150;
+    int lineWidth = 2;
+
+    // Draw hollow frames, each with different colors
+    D3DCOLOR color1 = D3DCOLOR_RGBA(255, 0, 0, 255);    // Red
+    D3DCOLOR color2 = D3DCOLOR_RGBA(0, 255, 0, 255);    // Green
+    D3DCOLOR color3 = D3DCOLOR_RGBA(0, 0, 255, 255);    // Blue
+
+    // Start drawing
+    D3DDrawLib::Start()->DrawBloodFrame(frameLeft, frameTop, frameHeight, frameWidth, lineWidth, color1);
+    D3DDrawLib::Start()->DrawBloodFrame(frameLeft + 170, frameTop, frameHeight, frameWidth, lineWidth, color2);
+    D3DDrawLib::Start()->DrawBloodFrame(frameLeft + 340, frameTop, frameHeight, frameWidth, lineWidth, color3);
+}
+```
+To draw vertical progress frames, simply swap frameHeight and frameWidth, keeping the rest unchanged. The code is as follows;
+```c
+void Draw()
+{
+    // Screen width and height
+    int ScreenWidth = 1024;
+    int ScreenHeight = 768;
+
+    // Hollow frame parameters
+    float frameLeft = 50;
+    float frameTop = (ScreenHeight - 3 * 150) / 2;
+    float frameHeight = 150;
+    float frameWidth = 20;
+    int lineWidth = 2;
+
+    // Draw hollow frames, each with different colors
+    D3DCOLOR color1 = D3DCOLOR_RGBA(255, 0, 0, 255);    // Red
+    D3DCOLOR color2 = D3DCOLOR_RGBA(0, 255, 0, 255);    // Green
+    D3DCOLOR color3 = D3DCOLOR_RGBA(0, 0, 255, 255);    // Blue
+
+    // Start drawing
+    D3DDrawLib::Start()->DrawBloodFrame(frameLeft, frameTop, frameHeight, frameWidth, lineWidth, color1);
+    D3DDrawLib::Start()->DrawBloodFrame(frameLeft + 100, frameTop, frameHeight, frameWidth, lineWidth, color2);
+    D3DDrawLib::Start()->DrawBloodFrame(frameLeft + 200, frameTop, frameHeight, frameWidth, lineWidth, color3);
+}
+```
+
+**DrawBlood**
+
+To draw horizontal progress bars, call the DrawBlood_Horizontal function. The code below draws three horizontal progress bars.
+```c
+void Draw()
+{
+    // Screen width and height
+    int ScreenWidth = 1024;
+    int ScreenHeight = 768;
+
+    // Horizontal progress bar parameters
+    float x = (ScreenWidth - 3 * 150) / 2;
+    float y = 250;
+    int width = 150;
+    int height = 20;
+
+    // Draw horizontal progress bars, each with different colors
+    D3DCOLOR color1 = D3DCOLOR_RGBA(255, 0, 0, 255);    // Red
+    D3DCOLOR color2 = D3DCOLOR_RGBA(0, 255, 0, 255);    // Green
+    D3DCOLOR color3 = D3DCOLOR_RGBA(0, 0, 255, 255);    // Blue
+
+    D3DDrawLib::Start()->DrawBlood_Horizontal(50.0f, x, y, width, height, color1);
+    D3DDrawLib::Start()->DrawBlood_Horizontal(75.0f, x + 170, y, width, height, color2);
+    D3DDrawLib::Start()->DrawBlood_Horizontal(25.0f, x + 340, y, width, height, color3);
+}
+```
+To draw vertical progress bars, call the DrawBlood_Vertical function. The code below draws three vertical progress bars.
+```c
+void Draw()
+{
+    float hp = 75.0f;
+    float x = 100.0f;
+    float y = 100.0f;
+    int width = 20;
+    int height = 100;
+ 
+    D3DCOLOR fullHealthColor = D3DCOLOR_RGBA(0, 255, 0, 255);  // Green
+    D3DCOLOR midHealthColor = D3DCOLOR_RGBA(255, 255, 0, 255); // Yellow
+    D3DCOLOR lowHealthColor = D3DCOLOR_RGBA(255, 0, 0, 255);   // Red
+
+    D3DCOLOR color;
+    if (hp >= 75.0f)
+    {
+        color = fullHealthColor;
+    }
+    else if (hp >= 35.0f)
+    {
+        color = midHealthColor;
+    }
+    else
+    {
+        color = lowHealthColor;
+    }
+
+    // Start drawing
+    D3DDrawLib::Start()->DrawBlood_Vertical(hp, x, y, width, height, color);
+    D3DDrawLib::Start()->DrawBlood_Vertical(hp, x + 100, y, width, height, midHealthColor);
+    D3DDrawLib::Start()->DrawBlood_Vertical(hp, x + 200, y, width, height, lowHealthColor);
+}
+```
+
+**DrawBloodNew**
+
+This function is an enhanced version of the DrawBlood series, allowing you to specify whether the progress bar fills from top to bottom or bottom to top. Use DrawBlood_VerticalNew for complete vertical progress bars and DrawBlood_HorizontalNew for complete horizontal progress bars.
+
+The following demonstrates drawing three vertical progress bars with different colors using DrawBlood_VerticalNew;
+```c
+void Draw()
+{
+    // Screen width and height
+    int ScreenWidth = 1024;
+    int ScreenHeight = 768;
+
+    // Vertical progress bar parameters
+    float x = (ScreenWidth - 3 * 20) / 2;
+    float y = 100;
+    int width = 20;
+    int height = 150;
+
+    // Draw vertical progress bars, each with different colors and styles
+    D3DCOLOR color1 = D3DCOLOR_RGBA(255, 0, 0, 255);    // Red
+    D3DCOLOR color2 = D3DCOLOR_RGBA(0, 255, 0, 255);    // Green
+
+#define BLOOD_UPTODOWN 1
+#define BLOOD_DOWNTOUP 2
+
+    D3DDrawLib::Start()->DrawBlood_VerticalNew(50.0f, x, y, width, height, color1, BLOOD_UPTODOWN);
+    D3DDrawLib::Start()->DrawBlood_VerticalNew(75.0f, x + 30, y, width, height, color2, BLOOD_UPTODOWN);
+    D3DDrawLib::Start()->DrawBlood_VerticalNew(90.0f, x + 60, y, width, height, color2, BLOOD_DOWNTOUP);
+}
+```
+
+To draw horizontal progress bars, call DrawBlood_HorizontalNew. The code is as follows;
+```c
+void Draw()
+{
+    // Screen width and height
+    int ScreenWidth = 1024;
+    int ScreenHeight = 768;
+
+    // Horizontal progress bar parameters
+    float x = (ScreenWidth - 3 * 150) / 2;
+    float y = 250;
+    int width = 150;
+    int height = 20;
+
+    // Draw horizontal progress bars, each with different colors and styles
+    D3DCOLOR color1 = D3DCOLOR_RGBA(255, 0, 0, 255);    // Red
+    D3DCOLOR color2 = D3DCOLOR_RGBA(0, 255, 0, 255);    // Green
+
+#define BLOOD_UPTODOWN 1
+#define BLOOD_DOWNTOUP 2
+
+    D3DDrawLib::Start()->DrawBlood_HorizontalNew(50.0f, x, y, width, height, color1, BLOOD_UPTODOWN);
+    D3DDrawLib::Start()->DrawBlood_HorizontalNew(75.0f, x + 90, y, width, height, color2, BLOOD_UPTODOWN);
+    D3DDrawLib::Start()->DrawBlood_HorizontalNew(25.0f, x + 180, y, width, height, color2, BLOOD_DOWNTOUP);
+}
+```
+
+**DrawTransverse**
+
+Used for drawing structured progress bars. DrawBlood_Transverse draws horizontal progress bars and DrawLeft_Vertical draws vertical progress bars. The following code draws three horizontal progress bars;
+```c
+void Draw()
+{
+    // Screen width and height
+    int ScreenWidth = 1024;
+    int ScreenHeight = 768;
+
+    // Horizontal progress bar parameters
+    float y = 100.0f;
+    float height = 20.0f;
+    float spacing = 30.0f;  // Spacing between each progress bar
+
+    // First progress bar
+    float x1 = 100.0f;
+    float width1 = 200.0f;
+    D3DCOLOR colorA1 = D3DCOLOR_RGBA(255, 0, 0, 255);  // Red
+    D3DCOLOR colorB1 = D3DCOLOR_RGBA(0, 255, 0, 255);  // Green
+    D3DDrawLib::Start()->DrawBlood_Transverse(75.0f, x1, y, width1, height, colorA1, colorB1);
+
+    // Second progress bar
+    float x2 = 100.0f + width1 + spacing;
+    float width2 = 150.0f;
+    D3DCOLOR colorA2 = D3DCOLOR_RGBA(0, 0, 255, 255);  // Blue
+    D3DCOLOR colorB2 = D3DCOLOR_RGBA(255, 255, 0, 255);  // Yellow
+    D3DDrawLib::Start()->DrawBlood_Transverse(50.0f, x2, y, width2, height, colorA2, colorB2);
+
+    // Third progress bar
+    float x3 = 100.0f + width1 + width2 + 2 * spacing;
+    float width3 = 180.0f;
+    D3DCOLOR colorA3 = D3DCOLOR_RGBA(255, 255, 0, 255);  // Yellow
+    D3DCOLOR colorB3 = D3DCOLOR_RGBA(255, 0, 255, 255);  // Purple
+    D3DDrawLib::Start()->DrawBlood_Transverse(85.0f, x3, y, width3, height, colorA3, colorB3);
+}
+```
+
+For vertical drawing, simply change the drawing function to DrawLeft_Vertical, as shown in the code below;
+```c
+void Draw()
+{
+    // Screen width and height
+    int ScreenWidth = 1024;
+    int ScreenHeight = 768;
+
+    // Vertical progress bar parameters
+    float x = 300.0f;
+    float width = 20.0f;
+    float spacing = 30.0f;  // Spacing between each progress bar
+
+    // First progress bar
+    float y1 = 100.0f;
+    float height1 = 200.0f;
+    D3DCOLOR colorA1 = D3DCOLOR_RGBA(255, 0, 0, 255);  // Red
+    D3DCOLOR colorB1 = D3DCOLOR_RGBA(0, 255, 0, 255);  // Green
+    D3DDrawLib::Start()->DrawLeft_Vertical(50.0f, x, y1, width, height1, colorA1, colorB1);
+
+    // Second progress bar
+    float y2 = 100;
+    float height2 = 150.0f;
+    D3DCOLOR colorA2 = D3DCOLOR_RGBA(0, 0, 255, 255);  // Blue
+    D3DCOLOR colorB2 = D3DCOLOR_RGBA(255, 255, 0, 255);  // Yellow
+    D3DDrawLib::Start()->DrawLeft_Vertical(75.0f, x+100, y1, width, height2, colorA2, colorB2);
+
+    // Third progress bar
+    float y3 = 200;
+    float height3 = 180.0f;
+    D3DCOLOR colorA3 = D3DCOLOR_RGBA(255, 255, 0, 255);  // Yellow
+    D3DCOLOR colorB3 = D3DCOLOR_RGBA(255, 0, 255, 255);  // Purple
+    D3DDrawLib::Start()->DrawLeft_Vertical(85.0f, x+200, y1, width, height3, colorA3, colorB3);
+}
+```
+
+**DrawCenterBlood**
+
+Used for drawing centered progress bars, which are styled progress bars. DrawHorizontalCenterBlood draws horizontal progress and DrawVerticalCenterBlood draws vertical progress, as shown in the code below;
+```c
+void Draw()
+{
+    // Horizontal
+    D3DDrawLib::Start()->DrawHorizontalCenterBlood(100, 200, 100, 10, 100, 0);  //  100%, center at (100, 200), width 100
+    D3DDrawLib::Start()->DrawHorizontalCenterBlood(200, 200, 50, 10, 50, 0);   //  50%, center at (200, 200), width 50
+    D3DDrawLib::Start()->DrawHorizontalCenterBlood(300, 200, 25, 10, 15, 0);   //  15%, center at (300, 200), width 25
+
+    // Vertical
+    D3DDrawLib::Start()->DrawVerticalCenterBlood(100, 90, 100, 10, 100, false);
+    D3DDrawLib::Start()->DrawVerticalCenterBlood(200, 90, 100, 10, 50, false);
+    D3DDrawLib::Start()->DrawVerticalCenterBlood(300, 90, 100, 10, 25, false);
+}
+```
+
+**Bordered Text**
+
+Four functions are provided for text rendering. DrawString renders normal text, DrawColourStringA renders outlined text, and DrawStringAndString or DrawStringAndStringEx render multiple text elements. Since text rendering is relatively simple, you can adjust the examples as needed.
+
+```c
+void Draw()
+{
+    char szBuf[256] = { 0 };
+    strcpy(szBuf, "hello lyshark");
+
+    // Normal text
+    D3DDrawLib::Start()->DrawString(szBuf, 25, 10, 20, D3DCOLOR_RGBA(255, 0, 0, 255));
+
+    // Outlined text
+    D3DDrawLib::Start()->DrawColourStringA(szBuf, 30, 20, 40, D3DCOLOR_RGBA(255, 0, 0, 255), D3DCOLOR_RGBA(5, 0, 0, 2));
+
+    // Multiple text
+    D3DDrawLib::Start()->DrawStringAndString(szBuf, szBuf, 30, 25, 50, 100, D3DCOLOR_RGBA(255, 0, 0, 255), D3DCOLOR_RGBA(5, 0, 0, 2));
+
+    D3DDrawLib::Start()->DrawStringAndStringEx(szBuf, szBuf, 30, 25, 70, 150, D3DCOLOR_RGBA(255, 0, 0, 255), D3DCOLOR_RGBA(5, 0, 0, 2));
+}
+```
